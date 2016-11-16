@@ -1,0 +1,36 @@
+- name: create vg
+#  lvg: vg="{{ acronimo }}" pvs=/dev/sdc
+  lvg: vg="{{ vg }}" pvs=/dev/"{{ item.dev }}"
+  with_items:
+     - "{{ lun_storage }}"
+  #when: {{ env }} == "sviluppo"
+- name: debug
+  debug: msg="DEV {{ item.dev }}"
+  with_items:
+     - "{{ lun_storage }}"
+- name: create directories for mount points
+  file: path={{ item.fs }} state=directory mode=0755 owner={{ item.owner }} group={{ item.group }}
+  with_items:
+     - "{{ filesystems }}"
+  register: device_stat
+- name: debug
+  debug: msg="FS {{ item.fs }}"
+  with_items:
+     - "{{ filesystems }}"
+#- name: create link for mount points "home/dbuser"
+#  file: src=/home/{{ item.src }} dest={{ item.dest }} state=link
+#  with_items:
+#      - { src: "{{ item.fs }}", dest: "/home/{{ item.fs }}" }
+ # when: {{ item.fs }} == "/oradata/{{ acronimo }}/home/{{ dbuser }}"
+- name: create volumes for database
+  lvol: vg={{ vg }} lv={{ item.lvname }} size={{ item.size }}
+  with_items:
+     - "{{ filesystems }}"
+- name: create filesystems for database
+  filesystem: fstype=ext4 dev=/dev/mapper/{{ vg }}-{{ item.lvname }}
+  with_items:
+     - "{{ filesystems }}"
+- name: mount filesystems for database
+  mount: name={{ item.fs }} src=/dev/mapper/{{ vg }}-{{ item.lvname }} fstype=ext4 dump=1 passno=2 opts="noatime,nodiratime" state=mounted
+  with_items:
+     - "{{ filesystems }}"
