@@ -39,7 +39,7 @@ if [[ -n $xcls ]]; then
    host $cls
    if [[ $? == 1 ]]; then
       echo -e "${ERR} IL CLUSTER $cls  NON E'RISOLVIBILE SUL DNS ${Z}"
-      exit $?
+      exit 1
    fi
    nodo=$(ssh $cls 'hostname')
    VARS=$(cerca_nodo $nodo)

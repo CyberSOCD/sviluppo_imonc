@@ -1,0 +1,137 @@
+
+nel path sotto, abbiamo (grazio Fabio  ) depositato il nuovo xpinfo.
+
+Sarebbe auspicabile installarlo sui server e hp-ux e linux (per linux, sui nodi che vedono gli xp7 è già aggiornato).
+
+Su molti server c’è la versione del 2011 
+
+gest:/opt/gest/depot/HP/storage/XPINFO/XPINFO_V33/
+
+
+CDLMOT02  (cluster di test per l’automazione creazione pacchetto).
+I nodo del cluster sono:
+sdlmot03
+sdlstt04
+
+Creazione pacchetti di test su cmdb
+
+nomi pacchetti
+
+workordercon 2 attività
+
+4045 --> creazione nome pacchetto
+
+4491 --> assegnazione ip
+
+Cluster
+CDLMOT02
+
+rete frontend su eth1
+10.31.204.0 / 22
+
+rete backup su eth4
+10.156.60.0/22
+inet 10.156.60.31/22 brd 10.156.63.255 scope global eth4
+
+
+
+###variabili box disco
+tri="076713"       ###tripletta  ---> corrisponde a "58171" su Moncalieri -- "58675" su Settimo -- "58774" su Parma  | XP7
+tri_b="020203"     ###tripletta  ---> corrisponde a "58761" su Moncalieri -- "50550" su Settimo -- "58167" su Parma	 | XP7
+dcm="85779"        ###doppietta moncalieri
+dcm_b="53988"      ###doppietta moncalieri
+dcm_t="53988"      ###tripletta moncalieri
+scm="78692"        ###standalone moncalieri senza DR
+dst="85770"        ###doppietta settimo
+dst_b="85756"      ###doppietta settimo
+sst="53250"        ###standolne o doppietta settimo
+tpa="CZ3550S4TA"   ###standalone 3PAR
+
+
+
+Ciao,
+comincio a mandarti i dati per le doppiette già disponibili:
+
+NUM LUN - MODALITA’ – SITO
+
+00:00:80 – SILVER – CCM
+00:00:81 – SILVER – CCM
+00:00:82 – SILVER – CCM
+In replica su CED
+
+00:00:3A – SILVER – SET
+00:00:48 – SILVER – SET
+00:00:49 – SILVER – SET
+In replica su CAM
+
+[‎14/‎11/‎2016 10:06] Monardo Giuseppe Andrea:
+XP_85779_CL8A
+[‎14/‎11/‎2016 10:07] Monardo Giuseppe Andrea:
+85779 --> CCM
+[‎14/‎11/‎2016 10:09] Monardo Giuseppe Andrea:
+85770 --> SET
+
+
+
+
+questi sono i dati per le lun in tripletta:
+CCM:
+distDev_vmax_0572_0573_00EF_009F_GOLD_vol   60001440000000106034d62b9b89401b
+distDev_vmax_0572_0573_00F2_00A0_GOLD_vol   60001440000000106034d62b9b89401c
+distDev_vmax_0572_0573_0104_01AA_GOLD_vol   60001440000000106034d62b9b89401d
+
+CCS:
+distDev_vmax_0572_0573_0105_01AB_GOLD_vol   60001440000000106034d62b9b89401e
+distDev_vmax_0572_0573_0136_01E4_GOLD_vol   60001440000000106034d62b9b89401f
+distDev_vmax_0572_0573_014C_01EA_GOLD_vol   60001440000000106034d62b9b894020
+
+
+
+INVENTORY
+
+sdlvms0035.sede.corp.sanpaoloimi.com reqid=130 env=sviluppo hostname_backup= nome_pacchetto=sdlvms0035 cluster_name= ip_dati= netmask_dati= ip_backup= netmask_backup= acronimo=tmsfe0 utente_db=dbtmsfe0 oracle_user=ora1212 action=add sid=MSFE0 db_type=SVIL db_data_size=10 vg=vg00_tmsfe0 port=1531 lun_list=']' storage_site= filesystems='[{"fs":"/oradata/TMSFE0/home/dbtmsfe0","size":"190M","owner":"dbtmsfe0","group":"users","lvname":"tmsfe0home"},{"fs":"/oradata/TMSFE0/database","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0database"},{"fs":"/oradata/TMSFE0/database/system/undo","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0undo"},{"fs":"/oradata/TMSFE0/database/system/tmp","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0tmp"},{"fs":"/oradata/TMSFE0/database/archive","size":"5120M","owner":"ora1212","group":"dba","lvname":"tmsfe0archive"},{"fs":"/oradata/TMSFE0/database/datafile/data","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0data"}]' lun_storage='[{"dev":"sdc","size":32}]' seriale_storage= modalita_storage=silver
+
+pdlttt01
+reqid=130
+env=sviluppo
+hostname_backup=
+nome_pacchetto=pdlttt01
+cluster_name=
+ip_dati=
+netmask_dati=
+ip_backup=
+netmask_backup=
+acronimo=tmsfe0
+utente_db=dbtmsfe0
+oracle_user=ora1212
+action=add
+sid=MSFE0
+db_type=SVIL
+db_data_size=10
+vg=vg00_tmsfe0
+port=1531
+lun_list=
+storage_site=
+filesystems='[{"fs":"/oradata/TMSFE0/home/dbtmsfe0","size":"190M","owner":"dbtmsfe0","group":"users","lvname":"tmsfe0home"},{"fs":"/oradata/TMSFE0/database","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0database"},{"fs":"/oradata/TMSFE0/database/system/undo","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0undo"},{"fs":"/oradata/TMSFE0/database/system/tmp","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0tmp"},{"fs":"/oradata/TMSFE0/database/archive","size":"5120M","owner":"ora1212","group":"dba","lvname":"tmsfe0archive"},{"fs":"/oradata/TMSFE0/database/datafile/data","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0data"}]'
+lun_storage='[{"lun":"0080","lun":"0081","lun":"0082"}]'
+seriale_storage=85779
+modalita_storage=silver
+
+
+pdlttt01 reqid=130 env=sviluppo hostname_backup= nome_pacchetto=pdlttt01 cluster_name=cdlmot02 ip_dati= netmask_dati= ip_backup= netmask_backup= acronimo=tmsfe0 utente_db=dbtmsfe0 oracle_user=ora1212 action=add sid=MSFE0 db_type=SVIL db_data_size=10 vg=vg00_tmsfe0 port=1531 lun_list= storage_site=moncalieri filesystems='[{"fs":"/oradata/TMSFE0/home/dbtmsfe0","size":"190M","owner":"dbtmsfe0","group":"users","lvname":"tmsfe0home"},{"fs":"/oradata/TMSFE0/database","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0database"},{"fs":"/oradata/TMSFE0/database/system/undo","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0undo"},{"fs":"/oradata/TMSFE0/database/system/tmp","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0tmp"},{"fs":"/oradata/TMSFE0/database/archive","size":"5120M","owner":"ora1212","group":"dba","lvname":"tmsfe0archive"},{"fs":"/oradata/TMSFE0/database/datafile/data","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0data"}]' lun_storage='[{"lun":"0080","lun":"0081","lun":"0082"}]' seriale_storage=85779 modalita_storage=silver
+
+
+
+
+4045 creazione nome pacchetto
+
+4491 assegnazione ip
+
+PDBNAT101 - 10.31.205.119 -- PDBNAT101-BK862 10.156.60.201
+PDBCBT108 - 10.31.205.120 -- PDBCBT108-BK862 10.156.60.202
+PDBAAT120 - 10.31.205.132 -- PDBAAT120-BK862 10.156.60.203
+
+Attività
+Nuovo Pacchetto (LINUX credo) - 3959 ma no nva server se hai già ip e pacchettto ... l'altro non lo segnato
+IP --> pacchetto  4491
+IP backup --> pacchetto 4535

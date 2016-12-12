@@ -1,6 +1,6 @@
 #!/bin/env bash                                                                   #
-# Version:3.01                                    #
-# Author : LC                                     #
+# Version:1                                       #
+# Author : Albert Trebla alias LC                 #
 #                                                 #
 ###################################################
 

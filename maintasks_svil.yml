@@ -1,0 +1,37 @@
+- name: create vg
+  lvg: vg="{{ vg }}" pvs=/dev/"{{ item.dev }}"
+  with_items:
+     - "{{ lun_storage }}"
+
+- name: create directories for mount points
+  file: path={{ item.fs }} state=directory mode=0755 owner={{ item.owner }} group={{ item.group }}
+  with_items:
+     - "{{ filesystems }}"
+
+- name: Check if home dir exist
+  stat: path={{ item.fs }}
+  with_items:
+     - "{{ filesystems }}"
+ # register: device_stat
+
+- name: Create link home/dbuser
+  file: src={{ item.fs }} dest=/home/{{ utente_db }} state=link
+  when: item.fs  == "/oradata/{{ acronimo | upper }}/home/{{ utente_db }}"
+  with_items:
+     - "{{ filesystems }}"
+
+
+- name: create volumes for database
+  lvol: vg={{ vg }} lv={{ item.lvname }} size={{ item.size }}
+  with_items:
+     - "{{ filesystems }}"
+
+- name: create filesystems for database
+  filesystem: fstype=ext4 dev=/dev/mapper/{{ vg }}-{{ item.lvname }}
+  with_items:
+     - "{{ filesystems }}"
+
+- name: mount filesystems for database
+  mount: name={{ item.fs }} src=/dev/mapper/{{ vg }}-{{ item.lvname }} fstype=ext4 dump=1 passno=2 opts="noatime,nodiratime" state=mounted
+  with_items:
+     - "{{ filesystems }}"
