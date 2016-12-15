@@ -1,0 +1,45 @@
+- name: faccio il rescan dell LUN
+  shell: for i in $(ls /sys/class/fc_host); do echo $i && echo "- - -" > /sys/class/scsi_host/$i/scan; done
+- name: chiama il multipath
+  shell: multipath -ll | grep -i "{{ item.lun }}" | awk -F" " '{ print $1 }'
+  with_items: lun_storage
+  register: luns_result
+- debug: var=luns_result
+- set_fact: device="/dev/mapper/"
+- set_fact: l_path="{% for i in luns_result.results %}{{ device }}{{ i.stdout }}{% if not loop.last %},{% endif %}{%endfor%}"
+- debug: var=l_path
+
+#- set_fact: l_path="{% set comma=',' %}{% for i in luns_result.results %}{{ device }}{{ i.stdout }}{{ comma }} {%endfor%}"
+- name: create vg
+  lvg: vg="{{ vg }}" pvs="{{ l_path }}"
+#####fino qua su varie ansible test1
+
+- name: create volumes for database
+  lvol: vg={{ vg }} lv={{ item.lvname }} size={{ item.size }}
+  with_items: filesystems
+- name: create filesystems for database
+  filesystem: fstype=ext4 dev=/dev/mapper/{{ vg }}-{{ item.lvname }}
+  with_items: filesystems
+
+- name: create directories for mount points
+  file: path={{ item.fs }} state=directory mode=0755 owner={{ item.owner }} group={{ item.group }}
+  with_items: filesystems
+
+- name: chiamo script per scrivere System List e Autostart List
+  script: "{{ playbook_dir }}/roles/db_pkg/files/{{ script2 }} {{ nome_pacchetto }} {{ vg }} {{ modalita_storage }} {{ sito }} {{ seriale_storage}}"
+  register: rissc3
+- debug: var= rissc3.results
+
+- debug: msg="lancio script su  {{ nome_pacchetto}}---> {{ script3 }} {{ nome_pacchetto }} "
+- name: chiamo script per creazione pkg
+  script: "{{ playbook_dir }}/roles/db_pkg/files/{{ script3 }} {{ nome_pacchetto }} {{ item.fs }} {{ item.size }} {{ item.owner }} {{ item.group }} {{ item.lvname }} {{ acronimo }} {{ vg }} {{ modalita_storage }} {{ sito }} {{ utente_db }} {{ oracle_user }}"
+  register: rissc4
+  with_items: filesystems
+- debug: var=item.stdout
+  with_items: rissc4.results
+- debug: rissc4
+
+- name: Create link home/dbuser
+  file: src={{ item.fs }} dest=/home/{{ utente_db }} state=link
+  when: item.fs  == "/oradata/{{ acronimo | upper }}/home/{{ utente_db }}"
+  with_items: filesystems
