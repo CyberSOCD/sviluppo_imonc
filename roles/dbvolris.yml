@@ -1,0 +1,3 @@
+- name: faccio il rescan dell LUN
+  shell: for i in $(ls /sys/class/fc_host); do echo $i && echo "- - -" > /sys/class/scsi_host/$i/scan; done
+- name: trovo le LUN

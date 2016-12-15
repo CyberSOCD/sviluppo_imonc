@@ -7,23 +7,29 @@ Su molti server c’è la versione del 2011 
 
 gest:/opt/gest/depot/HP/storage/XPINFO/XPINFO_V33/
 
-
+Cluster
 CDLMOT02  (cluster di test per l’automazione creazione pacchetto).
 I nodo del cluster sono:
 sdlmot03
 sdlstt04
 
+CLUSTER PROD ---> CDLMOP20
+sdlmop20
+sdlmop22
+sdlstp21
+sdlstp23
+
+CLUSTER TEST ---> CDLSTT08
+sdlstt08
+sdlstt09
+
 Creazione pacchetti di test su cmdb
-
 nomi pacchetti
-
-workordercon 2 attività
-
+workorder con 2 attività
 4045 --> creazione nome pacchetto
-
 4491 --> assegnazione ip
 
-Cluster
+
 CDLMOT02
 
 rete frontend su eth1
@@ -108,17 +114,18 @@ action=add
 sid=MSFE0
 db_type=SVIL
 db_data_size=10
-vg=vg00_tmsfe0
+vg=vg00_tmsfe0  x svil
+vg=vg00_pdlnct116  x prd/tst
 port=1531
 lun_list=
 storage_site=
 filesystems='[{"fs":"/oradata/TMSFE0/home/dbtmsfe0","size":"190M","owner":"dbtmsfe0","group":"users","lvname":"tmsfe0home"},{"fs":"/oradata/TMSFE0/database","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0database"},{"fs":"/oradata/TMSFE0/database/system/undo","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0undo"},{"fs":"/oradata/TMSFE0/database/system/tmp","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0tmp"},{"fs":"/oradata/TMSFE0/database/archive","size":"5120M","owner":"ora1212","group":"dba","lvname":"tmsfe0archive"},{"fs":"/oradata/TMSFE0/database/datafile/data","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0data"}]'
-lun_storage='[{"lun":"0080","lun":"0081","lun":"0082"}]'
+lun_storage='[{"lun":"0080"},{"lun":"0081"},{"lun":"0082"}]'
 seriale_storage=85779
 modalita_storage=silver
 
 
-pdlttt01 reqid=130 env=sviluppo hostname_backup= nome_pacchetto=pdlttt01 cluster_name=cdlmot02 ip_dati= netmask_dati= ip_backup= netmask_backup= acronimo=tmsfe0 utente_db=dbtmsfe0 oracle_user=ora1212 action=add sid=MSFE0 db_type=SVIL db_data_size=10 vg=vg00_tmsfe0 port=1531 lun_list= storage_site=moncalieri filesystems='[{"fs":"/oradata/TMSFE0/home/dbtmsfe0","size":"190M","owner":"dbtmsfe0","group":"users","lvname":"tmsfe0home"},{"fs":"/oradata/TMSFE0/database","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0database"},{"fs":"/oradata/TMSFE0/database/system/undo","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0undo"},{"fs":"/oradata/TMSFE0/database/system/tmp","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0tmp"},{"fs":"/oradata/TMSFE0/database/archive","size":"5120M","owner":"ora1212","group":"dba","lvname":"tmsfe0archive"},{"fs":"/oradata/TMSFE0/database/datafile/data","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0data"}]' lun_storage='[{"lun":"0080","lun":"0081","lun":"0082"}]' seriale_storage=85779 modalita_storage=silver
+pdlttt01 reqid=130 env=sviluppo hostname_backup= nome_pacchetto=pdlttt01 cluster_name=cdlmot02 ip_dati= netmask_dati= ip_backup= netmask_backup= acronimo=tmsfe0 utente_db=dbtmsfe0 oracle_user=ora1212 action=add sid=MSFE0 db_type=SVIL db_data_size=10 vg=vg00_tmsfe0 port=1531 lun_list= storage_site=moncalieri filesystems='[{"fs":"/oradata/TMSFE0/home/dbtmsfe0","size":"190M","owner":"dbtmsfe0","group":"users","lvname":"tmsfe0home"},{"fs":"/oradata/TMSFE0/database","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0database"},{"fs":"/oradata/TMSFE0/database/system/undo","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0undo"},{"fs":"/oradata/TMSFE0/database/system/tmp","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0tmp"},{"fs":"/oradata/TMSFE0/database/archive","size":"5120M","owner":"ora1212","group":"dba","lvname":"tmsfe0archive"},{"fs":"/oradata/TMSFE0/database/datafile/data","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0data"}]' lun_storage='[{"lun":"0080"} {"lun":"0081"} {"lun":"0082"}}]' seriale_storage=85779 modalita_storage=silver
 
 
 
@@ -135,3 +142,69 @@ Attività
 Nuovo Pacchetto (LINUX credo) - 3959 ma no nva server se hai già ip e pacchettto ... l'altro non lo segnato
 IP --> pacchetto  4491
 IP backup --> pacchetto 4535
+
+
+CLUSTER PROD E SYSTEM-TEST
+CDLMOP20
+CDLSTT08
+
+
+
+
+
+
+filesystems='[
+{"fs":"/oradata/TMSFE0/home/dbtmsfe0","size":"190M","owner":"dbtmsfe0","group":"users","lvname":"tmsfe0home"},
+{"fs":"/oradata/TMSFE0/database","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0database"},
+{"fs":"/oradata/TMSFE0/database/system/undo","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0undo"},
+{"fs":"/oradata/TMSFE0/database/system/tmp","size":"2048M","owner":"ora1212","group":"dba","lvname":"tmsfe0tmp"},
+{"fs":"/oradata/TMSFE0/database/archive","size":"5120M","owner":"ora1212","group":"dba","lvname":"tmsfe0archive"},
+{"fs":"/oradata/TMSFE0/database/datafile/data","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0data"},
+{"fs":"/oradata/TMSFE0/database/datafile/datb","size":"10240M","owner":"ora1212","group":"dba","lvname":"tmsfe0datb"}
+]'
+
+
+{"fs":"/oradata/TMSFE0/home/dbtmsfe0",
+"size":"190M",
+"owner":"dbtmsfe0",
+"group":"users",
+"lvname":"tmsfe0home"
+}
+
+
+FATTO COSI'
+SEMPRE ACRONIMO + S di ambiente
+
+ONLINE   pdlcct112-IP
+ONLINE   pdlcct112-bk862-IP
+ONLINE   vg00_pdlcct112-VG
+ONLINE   oradata_SMERC0_archive-pdlcct112-MNT
+ONLINE   oradata_SMERC0_data-pdlcct112-MNT
+ONLINE   oradata_SMERC0_database-pdlcct112-MNT
+ONLINE   oradata_SMERC0_home-pdlcct112-MNT
+ONLINE   oradata_SMERC0_tmp-pdlcct112-MNT
+ONLINE   oradata_SMERC0_undo-pdlcct112-MNT
+ONLINE   lsn_SMERC0-pdlcct112-LSNR
+ONLINE   smerc0-pdlcct112-ORA
+ONLINE   pdlcct112-PROXY
+ONLINE   pdlcct112-bk862-PROXY
+oradata_SPSHI0_database-pdlaat116-MNT BlockDevice   /dev/mapper/vg00_pdlaat116-spshi0database
+oradata_SPSHI0_database-pdlaat116-MNT MountPoint    /oradata/SPSHI0/database
+
+
+
+SCRIPT3 PARAMETRI
+script: "{{ playbook_dir }}/roles/db_pkg/files/{{ script3 }}
+    $1={{nome_pacchetto}}
+    $2={{ item.fs }}
+    $3={{ item.size }}
+    $4={{ item.owner }}
+    $5={{ item.group }}
+    $6={{ item.lvname }}
+    $7={{ acronimo }}
+    $8={{ vg }}
+    $9={{ modalita_storage }}
+    $10={{ sito }}
+    $11={{ utente_db }}
+    $12={{ oracle_user }}
+"

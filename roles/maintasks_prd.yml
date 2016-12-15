@@ -1,0 +1,14 @@
+-name:  crea pkg
+- debug: var="{{ playbook_dir }}"
+- name: chiamo script per scelta nodo
+local_action: shell {{ playbook_dir }}/roles/db_pkg/files/{{ script1 }} {{ cluster_name }}
+register: rissc1
+when: cluster_name is defined and cluster_name != ""
+- debug: var="{{ cluster_name }}"
+- set_fact: nodsca={{ rissc1.stdout_lines[2] }} numpkg={{ rissc1.stdout_lines[3] }}
+- debug: msg="nodo di creazione {{ nodsca }} {{ numpkg }}"
+- debug: var="lancio script su {{ nodsca }} ---> {{ script2 }} {{ nome_pacchetto }} {{ ip_dati }} {{ netmask_dati  }} {{ ip_backup  }} {{  netmask_backup }}"
+- name: chiamo script per creazione pkg
+script: "{{ playbook_dir }}/roles/db_pkg/files/{{ script2 }} {{ nome_pacchetto }} {{ ip_dati }} {{ netmask_dati  }} {{ ip_backup  }} {{  netmask_backup }}"
+register: rissc2
+delegate_to: "{{ nodsca }}"

@@ -1,0 +1,91 @@
+- debug: var= " {{ item.lun }} "
+  with_items: lun_storage
+
+- set_fact: lista_lun= "{{ item.lun  }}"
+#  register: lun_result
+  with_items: lun_storage
+  register: lun_result
+- debug: var=lun_result
+
+- set_fact:
+   l_lun: |
+    [{% for i in lun_result.results %}
+      {{ i.item.lun }}
+    {%endfor%}]
+- debug: var=l_lun
+- name: set xxlun
+  set_fact:
+    xxlun: "{{ l_lun | regex_replace('(\\n)','') }}"
+- debug: var=xxlun
+
+- debug: var= "{% for i in lun_result.results %}{{ i.item.lun }}{%endfor%}"
+
+#- set_fact: z_lun= [{% for i in lun_result.results %} {{ i.item.lun }} {%endfor%}]
+#- debug: var=z_lun
+#**************************************************************************
+### VERSIONE 01.01
+- debug: var= " {{ item.lun }} "
+  with_items: lun_storage
+- set_fact: lista_lun="{{ item.lun }}"
+  with_items: lun_storage
+  register: lun_result
+- debug: var=lun_result
+- set_fact: z_lun=" [{% for i in lun_result.results %} {{ i.item.lun }} {%endfor%}]"
+- debug: var=z_lun
+
+#****************************************************************************
+#### Versione 02.01
+- name: chiama il multipath
+  shell: multipath -ll | grep -i "{{ item.lun }}" | awk -F" " '{ print $1 }'
+  with_items: lun_storage
+  register: luns_result
+- debug: var=luns_result
+- set_fact: m_lun=" {% set comma = joiner(",") %}[{% for i in luns_result.results %}  {{ comma() }}{{ i.item.lun }} {%endfor%}]"
+- debug: var=m_lun
+- name: set xxlun
+  set_fact:
+    xxlun: "{{ m_lun | regex_replace('( )','') }}"
+- debug: var=xxlun
+#****************************************************************************
+#### Versione 02.01
+
+- name: chiama il multipath
+  shell: multipath -ll | grep -i "{{ item.lun }}" | awk -F" " '{ print $1 }'
+  with_items: lun_storage
+  register: luns_result
+- debug: var=luns_result
+- set_fact: device="/dev/mapper/"
+- set_fact: ml_pth="[{% for i in luns_result.results %}{{ device }}{{ i.stdout }} {%endfor%}]"
+- debug: var=ml_pth
+template
+
+
+****************************************************************************
+#### BACO BACO BACO long e short form si comportano diversamente
+- set_fact:
+     listx:'{{ [ "one", "two", "three" ] }}'
+- debug: var=listx
+- set_fact:
+     all_dir:"{{ listx | join('= ') }}"
+- debug: var=all_dir
+
+- set_fact: listx='{{ [ "one", "two", "three" ] }}'
+- debug: var=listx
+- set_fact: all_dir= "{{ listx | join('= ') }}"
+- debug: var=all_dir
+
+#****************************************************************************
+#### Versione 02.02
+
+- name: chiama il multipath
+  shell: multipath -ll | grep -i "{{ item.lun }}" | awk -F" " '{ print $1 }'
+  with_items: lun_storage
+  register: luns_result
+- debug: var=luns_result
+- set_fact: device="/dev/mapper/"
+- set_fact: l_path="{% for i in luns_result.results %}{{ device }}{{ i.stdout }}{% if not loop.last %},{% endif %}{%endfor%}"
+- debug: var=l_path
+
+#- set_fact: l_path="{% set comma=',' %}{% for i in luns_result.results %}{{ device }}{{ i.stdout }}{{ comma }} {%endfor%}"
+- name: create vg
+  lvg: vg="{{ vg }}" pvs="{{ l_path }}"
